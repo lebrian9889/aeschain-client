@@ -42,11 +42,18 @@ func main() {
 	ethNetwork := getEnv("ETHEREUM_NETWORK_WS")
 	lockerAddr := getEnv("LOCKER_ADDRESS")
 
-	fmt.Println("Listening events...")
 	client, err := ethclient.Dial(ethNetwork)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	chainId, err := client.ChainID(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected chain", chainId)
+	fmt.Println("Listening events...")
 
 	// load smart contract
 	lockerAddress := common.HexToAddress(lockerAddr)
